@@ -24,7 +24,7 @@ const FileViewer = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       fetchFiles();
-    }, 1000);
+    }, 3000);
 
     return () => clearInterval(interval);
   }, []);

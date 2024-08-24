@@ -150,6 +150,7 @@ const Chat = ({
 
   // imageFileDone - show image in chat
   const handleImageFileDone = (image) => {
+    console.log(image);
     appendToLastMessage(`\n![${image.file_id}](/api/files/${image.file_id})\n`);
   }
 
@@ -189,6 +190,7 @@ const Chat = ({
   };
 
   const handleReadableStream = (stream: AssistantStream) => {
+    console.log(stream);
     // messages
     stream.on("textCreated", handleTextCreated);
     stream.on("textDelta", handleTextDelta);
