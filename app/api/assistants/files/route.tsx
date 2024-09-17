@@ -25,6 +25,9 @@ export async function GET() {
   const vectorStoreId = await getOrCreateVectorStore(); // get or create vector store
   const fileList = await openai.beta.vectorStores.files.list(vectorStoreId);
 
+  console.log("getting files list");
+  console.log(fileList);
+
   const filesArray = await Promise.all(
     fileList.data.map(async (file) => {
       const fileDetails = await openai.files.retrieve(file.id);

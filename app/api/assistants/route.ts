@@ -1,3 +1,4 @@
+import { assistantId } from './../../assistant-config';
 import { openai } from "@/app/openai";
 
 export const runtime = "nodejs";
@@ -7,7 +8,7 @@ export async function POST() {
   const assistant = await openai.beta.assistants.create({
     instructions: "You are a helpful assistant.",
     name: "Quickstart Assistant",
-    model: "gpt-4o",
+    model: "gpt-4o-mini",
     tools: [
       { type: "code_interpreter" },
       {
@@ -36,3 +37,12 @@ export async function POST() {
   });
   return Response.json({ assistantId: assistant.id });
 }
+
+export async function GET(request: Request, { params: { assistantId } }) {
+  const assistants = await openai.beta.assistants.list();
+  console.log(assistants);
+
+  let assistant = assistants.data.find((assistant) => assistant.id === assistantId);
+  return Response.json(assistant);
+}
+

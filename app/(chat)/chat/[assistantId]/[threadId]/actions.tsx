@@ -2,16 +2,12 @@
 
 import { generateId } from 'ai';
 import { createAI, createStreamableUI, createStreamableValue } from 'ai/rsc';
-import { AzureOpenAI, OpenAI } from 'openai';
+
 import { ReactNode } from 'react';
 import { Message } from './message';
+import { openai } from '@/app/openai';
 
-const openai = new AzureOpenAI({
-  apiVersion: "2024-05-01-preview",
-  apiKey: "7874c0630c714f7d874b8e2bbc23d7c3",
-  endpoint: "https://ai-rahulpatilai4694709538172547.openai.azure.com/",
-  deployment: "gpt-4o"
-});
+
 
 export interface ClientMessage {
   id: string;
@@ -36,14 +32,20 @@ export async function submitMessage(question: string): Promise<ClientMessage> {
 
   (async () => {
     if (THREAD_ID) {
+
+      console.log("THREAD_ID", THREAD_ID);
       await openai.beta.threads.messages.create(THREAD_ID, {
         role: 'user',
-        content: question,
+        content: question
       });
 
       const run = await openai.beta.threads.runs.create(THREAD_ID, {
         assistant_id: ASSISTANT_ID,
         stream: true,
+        truncation_strategy: {
+          type: 'last_messages',
+          last_messages: 5,
+        }
       });
 
       runQueue.push({ id: generateId(), run });
@@ -54,6 +56,10 @@ export async function submitMessage(question: string): Promise<ClientMessage> {
         thread: {
           messages: [{ role: 'user', content: question }],
         },
+        truncation_strategy: {
+          type: 'last_messages',
+          last_messages: 5,
+        }
       });
 
       runQueue.push({ id: generateId(), run });

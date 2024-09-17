@@ -1,8 +1,19 @@
-import { AzureOpenAI } from "openai";
+import OpenAI, { AzureOpenAI } from "openai";
 
-export const openai = new AzureOpenAI({
+// export const openai = new AzureOpenAI({
+//     apiVersion: "2024-05-01-preview",
+//     apiKey: process.env.AZURE_OPENAI_APIKEY,
+//     endpoint: process.env.AZURE_OPENAI_ENDPOINT,
+//     deployment: "gpt-4o-mini"
+// })
+
+export const openai = new OpenAI({
+    apiKey: process.env.OPENAI_APIKEY
+})
+
+export const azureOpenAI = new AzureOpenAI({
     apiVersion: "2024-05-01-preview",
-    apiKey: "7874c0630c714f7d874b8e2bbc23d7c3",
-    endpoint: "https://ai-rahulpatilai4694709538172547.openai.azure.com/",
-    deployment: "gpt-4o"
-});
+    apiKey: process.env.AZURE_OPENAI_APIKEY,
+    endpoint: process.env.AZURE_OPENAI_ENDPOINT,
+    deployment: "gpt-4o-mini"
+})
